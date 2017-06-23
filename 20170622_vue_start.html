@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>hi!vue</title>
+    <script src="vue/vue.js"></script>
+    <style type="text/css">
+        ul{width:502px;}
+        li{width:50px;float: left;border:1px solid #ccc;margin-left:-1px;font:12px "宋体";text-align:center;line-height: 50px;height: 50px;list-style: none}
+        a{display: inline-block;width:100%;}
+        .active{background:#00bf12;color:#fff;}
+    </style>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="obj in todo">
+                {{obj.text}}
+            </li>
+        </ul>
+        <!--双向数据绑定-->
+        {{message}}
+        <input type="text" v-model="message">
+        <!--分页列表 v-bind-->
+            <div>
+                <ul class="pageCount">
+                    <li v-for="n in pageCount">
+                        <a href="javascript:void(0)" :class="action===n+1?'active':''">{{n+1}}</a>
+                    </li>
+                </ul>
+            </div>
+    </div>
+</body>
+    <script type="text/javascript">
+        new Vue({
+            el:"#app",
+            data:{
+                todo:[
+                    {text:1},
+                    {text:2},
+                    {text:3},
+                ],
+                /*双向数据绑定*/
+                message:"vuer!!",
+                /*列表绑定 v-bind*/
+                action:2,
+                pageCount:10
+            }
+        })
+    </script>
+</html>

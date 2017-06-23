@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>了解vue的思想</title>
+    <script src="vue/vue.js"></script>
+</head>
+<body>
+<!--
+核心:vuejs的核心是一个响应数据绑定系统它让数据与dom保持同步非常简单
+vuejs拥抱数据驱动的视图概念
+1.我们在普通 HTML 模板中使用特殊的语法将 DOM “绑定”到底层数据
+2.一旦创建了绑定，DOM 将与数据保持同步
+3.每当修改了数据，DOM 便相应地更新
+4.这样我们应用中的逻辑就几乎都是直接修改数据了，不必与 DOM 更新搅在一起
+
+
+1>构造思想
+view   dom
+|
+view model:
+dom listeners
+data bindings
+|
+model
+
+2>组件系统
+它提供了一种抽象，让我们可以独立可复用的小组件来构建大型应用
+
+3>构造器
+实例化 Vue 时，需要传入一个选项对象，它可以包含数据、模板、挂载元素、方法、生命周期钩子等选项
+
+4.过滤器
+{{message|capitalize}}
+{{message|filterA|filterB}}//串联过滤器
+{{message|falterA 'age'  age02}}//入参  带引号表示字符串,不带引号表达式计算  age传参给过滤器age02作为第二个参数  age02计算出结果传出结果作为第三个参数表示参数结果
+5.指令
+v-on(@),v-bind(:)
+例子 : @href="url"
+6.修饰符
+<a v-bind:href.literal="/a/b/c"></a>
+7.计算属性
+8.计算setter
+计算属性默认只是 getter，不过在需要时你也可以提供一个 setter：
+-->
+<!--例子-->
+<div id="app">
+    {{message}}<br/>
+    <!--7.计算元素个数-->
+    a={{a}},
+    b={{b}}
+    <!--7.1实例-->
+    {{fullName}}
+</div>
+
+</body>
+<script type="text/javascript">
+    var examData={
+        message:"我只是个码农"
+    }
+    var vm00=new Vue({
+        el:"#app",
+        data:examData
+    })
+//  3>扩展vue构造器
+    var myCom=Vue.extend({
+        //扩展选项
+    })
+    //所有mycom实例都将以预定义的扩展选项被创建
+    var myCreat=new myCom();
+
+    //属性与方法
+    var obj={a:1,b:2};
+    var vm=new Vue({
+        data:obj,
+        created:function(){
+            //compiled、 ready 、destroyed,created都是实例的生命周期   不存在控制器,组件的自定义逻辑可以分割在这些钩子中
+          //  console.log("对象a的生命周期"+this.a);
+        }
+    })
+    //访问属性
+//    console.log(vm.a);
+//    console.log(vm.b);
+    //Vue的$访问属性方法
+    var $obj={a:1,b:2};
+    var vm02=new Vue({
+        el:"#app",
+        data:$obj
+    })
+//    console.log(vm02.$data===$obj)
+//    console.log(vm02.$el===document.getElementById("app"))
+    vm02.$watch('a',function(newData,oldData){
+//        console.log("newData:"+newData);
+//        console.log("oldData:"+oldData);
+    })
+/*数据绑定
+*  1.{{data}}   //文本插值
+*  2.{{*data}}  //单次插值
+*  3.{{{}} // 数据绑定被忽略
+*  注意:在网站上动态渲染任意 HTML 是非常危险的，因为容易导致 XSS 攻击。记住，只对可信内容使用 HTML 插值，永不用于用户提交的内容
+* */
+//7.计算表达式
+var vm03=new Vue({
+    data:{a:1},
+    computed:{
+        //一个计算属性的 getter
+        b:function(){
+            //this指向vm03的实例
+            return this.a+1
+        }
+    }
+})
+//7.1  $watch和computed的对比
+var $vm7_1=new Vue({
+    el:"#app",
+    data:{
+      firstName:'Foo',
+        lastName:'Bar',
+        fullName:'Foo Bar'
+    }
+})
+    $vm7_1.$watch('firstName',function(val){
+        this.fullName=val+" "+this.lastName
+    })
+    $vm7_1.$watch('lastName',function(val){
+        this.fullName=val+" "+this.firstName;
+    })
+    //简写形式
+    var $vm7_2=new Vue({
+        el:"#app",
+        data:{
+            firstName:'Foo',
+            lastName:'Bar',
+            },
+        computed:{
+            fullName:function(){
+                return this.lastName+" "+this.firstName
+            }
+        }
+
+    })
+
+</script>
+
+</html>
