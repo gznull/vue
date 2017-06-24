@@ -2,9 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>class与style绑定</title>
+    <script src="vue/vue.js"></script>
+    <!--
+        v-bind 处理attribute （class,style,对象,数组）
+        作用绑定数据
+        class="{{ className }}"推荐
+        v-bind:class 不推荐
+        :class
+        v-on
+        1.对象语法
+    -->
 </head>
 <body>
 
+    <div id="app">
+        <!--1.对象语法-->
+        <div class="static" :class="{'class-a':isA,'class-b':isB}">object</div>
+        <div  :class="attrModel">object替换类</div>
+        <!--2.数组语法-->
+        <div :class="[classA,classB]">array</div>
+        <div :class="[classA,isB ? classB:'']">array三元表达</div>
+        <div ：class="[classA,{classB:isB,classC:isC}]"></div>
+        <!--3.绑定内联样式-->
+        <div :style="{color:colors,fontSize:fontSize+'px'}">内联样式01</div>
+        <div :style="styles">内联样式02</div>
+        <div :style="[styleA,styleB]"></div>
+
+    </div>
 </body>
+<script type="text/javascript">
+    /*1.对象语法*/
+//    var vm01=new Vue({
+//        el:"#app",
+//        data:{
+//            isA:true,
+//            isB:false
+//        }
+//    })
+//    var vm01_1=new Vue({
+//        el:"#app",
+//        data:{
+//            attrModel:{
+//                'class-a':true,
+//                'class-b':false,
+//            }
+//        }
+//    })
+    /*2.数组语法*/
+//    var vm02=new Vue({
+//        el:"#app",
+//        data:{
+//            classA:'class-A',
+//            classB:'class-B'
+//        }
+//    })
+//    var vm02_1=new Vue({
+//        el:"#app",
+//        data:{
+//            isB:false,
+//            classA:'class-A',
+//            classB:'class-b'
+//        }
+//    })
+    /*3.内联样式*/
+    var vm03=new Vue({
+        el:"#app",
+        data:{
+            colors:'red',
+            fontSize:66,
+            styles:{
+                fontSize:"99px",
+                color:'green'
+            }
+        }
+    })
+
+</script>
 </html>

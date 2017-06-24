@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>条件渲染</title>
+    <script src="vue/vue.js"></script>
+    <!--
+    1.v-if
+    2.v-show
+    3.v-if和v-show区别
+    3.1:v-show
+    v-show在dom中产生属性+标签：display: none;
+    v-show:不支持标签template
+    3.2.v-if
+    v-if不在dom产生标签
+    v-if支持template
+    3.3public
+    都支持v-else指令（要紧跟v-if/v-show）
+    4.组件警告
+    v-show在组件上因为指令优先级v-else出现问题
+    v-if.vs.v-show
+    1.Vue.js 有一个局部编译/卸载过程，因为 v-if 之中的模板也可能包括数据绑定或子组件
+    2.因为它会确保条件块在切换当中合适地销毁与重建条件块内的事件监听器和子组件
+    3.v-if 也是惰性的：如果在初始渲染时条件为假，则什么也不做——在条件第一次变为真时才开始局部编译（编译会被缓存起来）。
+    4.一般来说，v-if 有更高的切换消耗而 v-show 有更高的初始渲染消耗
+    -->
+</head>
+<body>
+    <div id="app">
+        <!--1.条件Handlebars模板 v-if-->
+        <!--{{#if ok}}-->
+        <!--<h1>ok</h1>-->
+        <!--{{/if}}-->
+        <p v-if="ok">ok</p>
+        <p v-else>notOk</p>
+        <!--模板-->
+        <template v-if="moban">
+            <p>1</p>
+            <p>2</p>
+            <p>3</p>
+        </template>
+        <!--v-show-->
+        <div v-show="isShow">isShow</div>
+    </div>
+</body>
+    <script type="text/javascript">
+        new Vue({
+            el:"#app",
+            data:{
+                ok:false,//v-if
+                moban:true,//v-if 模板
+                isShow:false//v-show
+            }
+        })
+    </script>
+</html>

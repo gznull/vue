@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>表单控件绑定</title>
+    <script src="vue/vue.js"></script>
+    <!--
+    1.v-model
+    创建双向数据绑定
+    1.1 text
+    1.2textarea
+    1.3checkbox
+    1.3.1多个checkbox
+    -->
+</head>
+<body>
+    <div id="app">
+        <p>text---</p>
+        {{message}}
+        <input type="text" v-model="message">
+        <p>textarea</p>
+        {{messageTextArea}}
+        <textarea name="" id="" cols="30" rows="10" v-model="messageTextArea"></textarea>
+        <p>checkbox---</p>
+        <input type="checkbox" v-model="checks" id="check">
+        <label  for="check">{{checks}}</label>
+        <p>1.3.1check---</p>
+        <input type="checkbox" value="jack" v-model="array_Name">
+        <label>{{name.user}}</label>
+        <input type="checkbox" value="mark" v-model="array_Name">
+        <label>{{name.user02}}</label>
+        <input type="checkbox" value="leon" v-model="array_Name">
+        <label>{{name.user03}}</label>
+        <span>check|name{{array_Name|json}}</span>
+        <p>redio---</p>
+        <label for="">boy</label>
+        <input type="radio" value="boy" v-model="sex">
+        <label for="">gril</label>
+        <input type="radio" value="gril" v-model="sex">
+        <span>选中了:{{sex}}</span>
+        <p>select--</p>
+        <select v-model="userCheckList">
+            <option v-for="n in hobby" track-by="$index" value="{{n.hobbyItem}}">{{n.hobbyItem}}</option>
+        </select>
+        <span>userCheckList:{{userCheckList}}</span>
+    </div>
+</body>
+    <script type="text/javascript">
+        var vm01=new Vue({
+            el:"#app",
+            data:{
+                checks:false,
+                messageTextArea:"",
+                message:"",
+                userCheckList:'',
+                name:{  //多个url
+                    user:"jack",
+                    user02:"mark",
+                    user03:"leon"
+                },
+                array_Name:[] // checkbox当被选中的时候就会显示数组
+                ,sex:"",
+                hobby:[
+                    {hobbyItem:'football'},
+                    {hobbyItem:'run'},
+                    {hobbyItem:'swinning'},
+                ]
+            }
+        })
+    </script>
+</html>

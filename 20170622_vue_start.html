@@ -30,6 +30,9 @@
                     </li>
                 </ul>
             </div>
+        <select name="option" >
+            <option value="{{obj.value}}" v-for="obj in todo">{{obj.text}}</option>
+        </select>
     </div>
 </body>
     <script type="text/javascript">
@@ -37,9 +40,9 @@
             el:"#app",
             data:{
                 todo:[
-                    {text:1},
-                    {text:2},
-                    {text:3},
+                    {text:1,value:"1"},
+                    {text:2,value:"2"},
+                    {text:3,value:"3"},
                 ],
                 /*双向数据绑定*/
                 message:"vuer!!",
@@ -47,6 +50,7 @@
                 action:2,
                 pageCount:10
             }
+
         })
     </script>
 </html>

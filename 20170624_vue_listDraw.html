@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>列表渲染</title>
+    <script src="vue/vue.js"></script>
+    <!--
+    1.v-for
+    1.1索引指定一个别名
+    1.2 template v-for
+    2.数组变动检测
+    2.1变异方法
+        vue包装了被观察数组的变异方法，故它们能触发视图更新。被包装的方法有
+        数组的方法
+            push,pop,shift,unshift,splice,sort,reverse
+        替换的方法
+            concat,slice
+            vue实现了一些启发算法以最大复用dom元素,因此用另一个数组替换数组是一个非常高效的方法
+       3.track-by
+       有时需要用全新对象（例如通过 API 调用创建的对象）替换数组
+       v-for 默认通过数据对象的特征来决定对已有作用域和 DOM 元素的复用程度，这可能导致重新渲染整个列表
+       如果每个对象都有一个唯一 ID 的属性，便可以使用 track-by 特性给 Vue.js 一个提示，Vue.js 因而能尽可能地复用已有实例
+       4.track-by=$index来做唯一的标识
+       强制让 v-for 进入原位更新模式：片断不会被移动，而是简单地以对应索引的新值刷新
+       这让数据替换非常高效，但是也会付出一定的代价。
+       因为这时 DOM 节点不再映射数组元素顺序的改变，不能同步临时状态（比如 <input> 元素的值）以及组件的私有状态。因此，如果 v-for 块包含 <input> 元素或子组件，要小心使用 track-by="$index"
+       5.存在问题
+       监察数组
+       5.1直接用索引设置元素，如 vm.items[0] = {}；
+       解决方法使用$set观察数组
+       5.2example1.items.$set(0,{childMsg:'对象'})
+       修改数据的长度，如 vm.items.length = 0。
+
+       6.作用域内还可以访问另外一个特殊变量 $key
+       是按 Object.keys() 的结果遍历，但是不能保证它的结果在不同的 JavaScript 引擎下是一致的。
+
+       7.显示过滤/排序的结果
+       有时我们想显示过滤/排序过的数组，同时不实际修改或重置原始数据。有两个办法：
+       1.创建一个计算属性，返回过滤/排序过的数组；
+       2.使用内置的过滤器 filterBy 和 orderBy
+    -->
+</head>
+<body>
+    <div id="app">
+        <!--v-for-->
+        <ul v-for="n in todes">
+            <li v-for="n in todes">value:{{n.content}}---索引："{{$index}}</li>
+        </ul>
+        <p>带索引的的例子</p>
+        <ul >
+            <li v-for="(index,item) in items">索引：{{index}}---value:{{item.cot}}</li>
+        </ul>
+        <p>of的使用法子</p>
+        <ul>
+            <li v-for="n of items">{{n.cot}}---{{$index}}</li>
+        </ul>
+        <!--template-->
+        <p>模板</p>
+        <ul>
+            <template v-for="item in items">
+                <li>{{item.cot}}</li>
+                <li class="divder">divder</li>
+            </template>
+        </ul>
+        <!--复用作用域-->
+        <p>复用作用域</p>
+        <ul>
+            <li v-for="n of trackItems" track-by="uId">{{n.uId}}</li>
+            //     3.tack-by
+        </ul>
+        <p>利用$index进行绑定</p>
+        <!--track-by=$index-->
+        <ul>
+            <li v-for="n of trackItems" track-by="$index">{{$index}}--<input type="text" placeholder="测试下同步" v-model="n.uId">{{n.uId}}</li>  //     3.tack-by
+        </ul>
+        <!--存在的问题5.1-->
+        <!--6.-->
+        <div v-for="n of keyItems">{{$key}}+" "+{{n}}</div>
+
+    </div>
+</body>
+    <script type="text/javascript">
+       var items=[  {cot:111},
+           {cot:1112},
+           {cot:1113}]
+        /*1.v-for*/
+        var vm01=new Vue({
+            el:"#app",
+            data:{
+                todes:[ //循环内容
+                    {content:1},
+                    {content:2},
+                ],items:[
+                    {cot:111},
+                    {cot:1112},
+                    {cot:1113},
+
+                ],
+                trackItems:[  //遇到唯一的uId的它会复用作用狱和dom元素  //     3.tack-by
+                    {uId:'666'},
+                    {uId:'888'},
+                    {uId:'999'},
+                ],
+                keyItems:{
+                    Name:'john',
+                    old:22,
+                    sex:'gril'
+                }
+            }
+
+        })
+
+//        var index=this.items.indexof(cot),
+//            if(index !==-1){
+//            this.items.splice(index-1)
+//        }
+
+    /*2变异方法*/
+//    vm01.items.push({cot:3333});
+//    vm01.items.shift({cot:3333});
+        //渲染不出来
+//    vm01.items.splice(0,0,6666);
+        //vm01.items.reverse();
+        vm01.items.sort();
+        //非变异方法 filter(),concat(),slice() 不修改原始数组返回信数组
+        //5.存在问题
+//         5.1
+       vm01.items.$set(1,{cot:333333333333333});  //改变视图的值  1表示下标值
+//        5.2
+        console.log(vm01.items.length=3)
+        /* 不太明白
+        * var index = this.items.indexOf(item)
+         if (index !== -1) {
+         this.items.splice(index, 1)
+         }
+        * */
+       //5.3 Object.freeze()  遍历数组如果数组元素是对象用  Object.freeze()冻结 需要明确指出track-by   在这情况下vue。js不能自动追踪对象,将给出一条警告
+        //6.$key
+        //
+
+    </script>
+</html>
