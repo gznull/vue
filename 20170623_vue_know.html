@@ -32,6 +32,7 @@ model
 实例化 Vue 时，需要传入一个选项对象，它可以包含数据、模板、挂载元素、方法、生命周期钩子等选项
 
 4.过滤器
+表达式 message 的值“管输（pipe）”到内置的 capitalize 过滤器，这个过滤器其实只是一个 JavaScript 函数，返回大写化的值。
 {{message|capitalize}}
 {{message|filterA|filterB}}//串联过滤器
 {{message|falterA 'age'  age02}}//入参  带引号表示字符串,不带引号表达式计算  age传参给过滤器age02作为第二个参数  age02计算出结果传出结果作为第三个参数表示参数结果
@@ -41,59 +42,72 @@ v-on(@),v-bind(:)
 6.修饰符
 <a v-bind:href.literal="/a/b/c"></a>
 7.计算属性
+computed
 8.计算setter
 计算属性默认只是 getter，不过在需要时你也可以提供一个 setter：
+9.属性与方法
+每个vue 实例都会代理其data对象里面的属性
+10.生命周期
+调用一些生命周期钩子，给自定义逻辑提供运行机会
+11.数据绑定
+11.1双 Mustache 标签将数据解析为纯文本而不是 HTML。为了输出真的 HTML 字符串，需要用三 Mustache 标签：
+
 -->
 <!--例子-->
 <div id="app">
-    {{message}}<br/>
+    {{{message}}}<br/>
+    {{* message}}<br/>
     <!--7.计算元素个数-->
     a={{a}},
     b={{b}}
+
     <!--7.1实例-->
     {{fullName}}
+    <p>set和get方法</p>
+    {{ fullName01}}
 </div>
 
 </body>
 <script type="text/javascript">
-    var examData={
-        message:"我只是个码农"
-    }
-    var vm00=new Vue({
-        el:"#app",
-        data:examData
-    })
+//    var examData={
+//        message:"我只是个码农"
+//    }
+//    var vm00=new Vue({   //构造view和model
+//        el:"#app",
+//        data:examData
+//    })
 //  3>扩展vue构造器
-    var myCom=Vue.extend({
-        //扩展选项
-    })
+//    var myCom=Vue.extend({
+//        //扩展选项
+//    })
     //所有mycom实例都将以预定义的扩展选项被创建
-    var myCreat=new myCom();
+  //  var myCreat=new myCom();
 
     //属性与方法
     var obj={a:1,b:2};
     var vm=new Vue({
+        el:'#app',
         data:obj,
         created:function(){
-            //compiled、 ready 、destroyed,created都是实例的生命周期   不存在控制器,组件的自定义逻辑可以分割在这些钩子中
-          //  console.log("对象a的生命周期"+this.a);
+            //compiled、 ready 、destroyed,created都是实例的生命周期不同阶段调用   不存在控制器,组件的自定义逻辑可以分割在这些钩子中
+          console.log("对象a的生命周期"+this.a);
         }
     })
     //访问属性
 //    console.log(vm.a);
 //    console.log(vm.b);
     //Vue的$访问属性方法
-    var $obj={a:1,b:2};
-    var vm02=new Vue({
-        el:"#app",
-        data:$obj
-    })
+//    var $obj={a:1,b:2};
+//    var vm02=new Vue({
+//        el:"#app",
+//        data:$obj
+//    })
 //    console.log(vm02.$data===$obj)
 //    console.log(vm02.$el===document.getElementById("app"))
-    vm02.$watch('a',function(newData,oldData){
+  //  vm02.$watch('a',function(newData,oldData){
 //        console.log("newData:"+newData);
 //        console.log("oldData:"+oldData);
-    })
+ //   })
 /*数据绑定
 *  1.{{data}}   //文本插值
 *  2.{{*data}}  //单次插值
@@ -102,6 +116,7 @@ v-on(@),v-bind(:)
 * */
 //7.计算表达式
 var vm03=new Vue({
+    el:"#app",
     data:{a:1},
     computed:{
         //一个计算属性的 getter
@@ -112,35 +127,42 @@ var vm03=new Vue({
     }
 })
 //7.1  $watch和computed的对比
-var $vm7_1=new Vue({
-    el:"#app",
-    data:{
-      firstName:'Foo',
-        lastName:'Bar',
-        fullName:'Foo Bar'
-    }
-})
-    $vm7_1.$watch('firstName',function(val){
-        this.fullName=val+" "+this.lastName
-    })
-    $vm7_1.$watch('lastName',function(val){
-        this.fullName=val+" "+this.firstName;
-    })
+//var $vm7_1=new Vue({
+//    el:"#app",
+//    data:{
+//      firstName:'Foo',
+//        lastName:'Bar',
+//        fullName:'Foo Bar'
+//    }
+//})
+//    $vm7_1.$watch('firstName',function(val){
+//        this.fullName=val+" "+this.lastName
+//    })
+//    $vm7_1.$watch('lastName',function(val){
+//        this.fullName=val+" "+this.firstName;
+//    })
     //简写形式
-    var $vm7_2=new Vue({
-        el:"#app",
-        data:{
-            firstName:'Foo',
-            lastName:'Bar',
-            },
-        computed:{
-            fullName:function(){
-                return this.lastName+" "+this.firstName
-            }
-        }
-
-    })
-
+//    var $vm7_2=new Vue({
+//        el:"#app",
+//        data:{
+//            firstName:'Foo',
+//            lastName:'Bar',
+//            },
+//        computed:{
+//            fullName:function(){
+//                return this.lastName+" "+this.firstName
+//            },
+//            fullName01:{
+//              get:function(){  return this.firstName+" "+this.lastName},
+//                set:function(newVal){
+//                    var names=newVal.split('');
+//                    this.firstName=names[0];
+//                    this.lastName=names[names.length-1];
+//                }
+//            },
+//        }
+//    })
+//    $vm7_2.fullName01='jack com';
 </script>
 
 </html>

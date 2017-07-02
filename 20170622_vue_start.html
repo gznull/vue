@@ -25,7 +25,7 @@
         <!--分页列表 v-bind-->
             <div>
                 <ul class="pageCount">
-                    <li v-for="n in pageCount">
+                    <li v-for="n in pageCount" >
                         <a href="javascript:void(0)" :class="action===n+1?'active':''">{{n+1}}</a>
                     </li>
                 </ul>

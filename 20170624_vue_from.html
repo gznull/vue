@@ -12,6 +12,20 @@
     1.2textarea
     1.3checkbox
     1.3.1多个checkbox
+    1.4radio
+    1.5select
+    2.绑定value
+    当选中时，`picked` 为字符串 "a"
+    <input type="radio" v-model="picked" value="a">
+     `toggle` 为 true 或 false
+    <input type="checkbox" v-model="toggle">
+     当选中时，`selected` 为字符串 "abc"
+    <select v-model="selected">
+        <option value="abc">ABC</option>
+    </select>
+    v-bind 实现动态修改value 可参考
+    参数特征
+    lazy,number,debounce
     -->
 </head>
 <body>
@@ -32,7 +46,7 @@
         <label>{{name.user02}}</label>
         <input type="checkbox" value="leon" v-model="array_Name">
         <label>{{name.user03}}</label>
-        <span>check|name{{array_Name|json}}</span>
+        <p>name：{{array_Name|json}}</p>
         <p>redio---</p>
         <label for="">boy</label>
         <input type="radio" value="boy" v-model="sex">
@@ -43,7 +57,38 @@
         <select v-model="userCheckList">
             <option v-for="n in hobby" track-by="$index" value="{{n.hobbyItem}}">{{n.hobbyItem}}</option>
         </select>
-        <span>userCheckList:{{userCheckList}}</span>
+        <p>userCheckList:{{userCheckList}}</p>
+        <p>动态选项v-for</p>
+        <select v-model="selected">
+            <option v-for="val of opt" :value="val.value" track-by="$index">{{val.text}}</option>
+        </select>
+        <span>{{selected}}</span>
+        <p>绑定value</p>
+        <p>checkbox</p>
+        <input  type="checkbox"  v-model="toggle"  v-bind:true-value="array.a"  v-bind:false-value="array.b" >
+        <p>{{toggle}}</p>
+        <p> radio</p>
+        <input  type="radio"  v-model="toggle"  v-bind:value="array.a" name="bool">true
+        <input  type="radio"  v-model="toggle"   v-bind:value="array.b" name="bool" >false
+
+        <p>select-optio</p>
+        <select v-model="selecteds">
+            <option :value="{number:123}">123</option>
+        </select>
+        <p >{{selecteds.number}}</p>
+        <p>参数特征</p>
+        <!--lazy-->
+        <input type="text"  v-model="msg">
+        <!--在默认情况下，v-model 在input 事件中同步输入框值与数据，可以添加一个特性 lazy，从而改到在 change 事件中同步：-->
+        <!--number-->
+        <input v-model="age" number>
+        <!--如果想自动将用户的输入转为 Number 类型（如果原值的转换结果为 NaN 则返回原值），可以添加一个特性 number：-->
+        <!--debounce-->
+        <input v-model="msg" debounce="500">
+        <!--debounce 设置一个最小的延时，在每次敲击之后延时同步输入框的值与数据。如果每次更新都要进行高耗操作（例如在输入提示中 Ajax 请求），它较为有用。
+        1.注意 debounce 参数不会延迟 input 事件：它延迟“写入”底层数据。因此在使用 debounce 时应当用 vm.$watch() 响应数据的变化。若想延迟 DOM 事件，应当使用 debounce 过滤
+        -->
+
     </div>
 </body>
     <script type="text/javascript">
@@ -53,20 +98,35 @@
                 checks:false,
                 messageTextArea:"",
                 message:"",
-                userCheckList:'',
+                userCheckList:'football',
+                selecteds:"",
+                msg:"",
                 name:{  //多个url
                     user:"jack",
                     user02:"mark",
                     user03:"leon"
                 },
+                toggle:'',
                 array_Name:[] // checkbox当被选中的时候就会显示数组
                 ,sex:"",
                 hobby:[
                     {hobbyItem:'football'},
                     {hobbyItem:'run'},
                     {hobbyItem:'swinning'},
-                ]
-            }
+                ],
+                selected:1,  //select绑定
+                opt:[
+                    {value:'1',text:' football'},
+                    {value:'2',text:' football00'},
+                    {value:'3',text:' football01'},
+                    {value:'4',text:' football02'}
+                ],
+                array:{
+                    a:111,
+                    b:222
+                }
+            },
         })
+        
     </script>
 </html>

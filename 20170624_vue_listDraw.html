@@ -45,7 +45,7 @@
     <div id="app">
         <!--v-for-->
         <ul v-for="n in todes">
-            <li v-for="n in todes">value:{{n.content}}---索引："{{$index}}</li>
+            <li v-for="n in todes" value="{{$index}}">value:{{n.content}}---索引："{{$index}}</li>
         </ul>
         <p>带索引的的例子</p>
         <ul >
@@ -89,15 +89,15 @@
             el:"#app",
             data:{
                 todes:[ //循环内容
-                    {content:1},
-                    {content:2},
+                    {content:111},
+                    {content:12},
                 ],items:[
                     {cot:111},
                     {cot:1112},
                     {cot:1113},
 
                 ],
-                trackItems:[  //遇到唯一的uId的它会复用作用狱和dom元素  //     3.tack-by
+                trackItems:[  //遇到唯一的uId的它会复用作用狱和dom元素  //     3.track-by
                     {uId:'666'},
                     {uId:'888'},
                     {uId:'999'},
@@ -137,7 +137,6 @@
         * */
        //5.3 Object.freeze()  遍历数组如果数组元素是对象用  Object.freeze()冻结 需要明确指出track-by   在这情况下vue。js不能自动追踪对象,将给出一条警告
         //6.$key
-        //
 
     </script>
 </html>

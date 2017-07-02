@@ -37,6 +37,13 @@
             </tr>
             </tbody>
         </table>
+        <fieldset>
+            <legend>02.利用键盘的enter 进行添加</legend>
+            <input type="text"  @keyup.enter="addElm($index)" placeholder="请输入内容" v-model="newVal">
+            <ul>
+                <li v-for="val in todos">{{val.text}} ---{{val.cot}} <button @click="delBtn($index)">X</button></li>
+            </ul>
+        </fieldset>
     </div>
 </body>
     <script type="text/javascript">
@@ -44,7 +51,11 @@
             el:"#app",
             data:{
                 person:{name:"",age:"",sex:""},
-                people:[]
+                people:[],
+                todos:[
+                    {text:0,cot:"测试01"}
+                ],
+                newVal:"",
             },
             methods:{
                 create:function(){
@@ -53,7 +64,16 @@
                 },
                 delectBtn:function(index){
                     this.people.splice(index,1);
+                },
+                addElm:function(index){
+                    var val=this.newVal.trim();
+                    this.todos.push({text:index,cot:val});
+                    this.newVal=null;
+                },
+                delBtn:function(index){
+                    this.todos.splice(index,1);
                 }
+
             }
         })
     </script>
