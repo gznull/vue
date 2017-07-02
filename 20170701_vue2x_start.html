@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2x开始</title>
+    <script type="text/javascript" src="vue/vue.js"></script>
+</head>
+<body>
+<!--
+1.独立构建vs运行时构建
+    独立构建vs运行时构建
+        独立构建(包含模板编译器)和运行构建
+        模板编译器:将模板字符串编译为纯 JavaScript 的渲染函数
+            独立的构建包含模板编辑器并支持template选项,它依赖于浏览器的接口存在所以你不能使用它来为服务器端渲染
+            运行时构建不包含模板编译器因此不支持template选项只能用render即使使用运行时构建，在单文件组件中也依然可以写模板，
+            因为单文件组件的模板会在构建时预编译为 render 函数。运行时构建比独立构建要轻量30%，只有 17.14 Kb min+gzip大小。
+2.CSP环境
+    安全策略(CSP)
+    webpack+vue-loader/browserify+vueify在csp环境中模板完美编译到render函数
+
+-->
+    <div id="app">
+        <ol>
+            <!-- 现在我们为每个todo-item提供待办项对象    -->
+            <!-- 待办项对象是变量，即其内容可以是动态的 -->
+            <todo-item v-for="item in groceryLidt" v-bind:todo="item"></todo-item>
+        </ol>
+    </div>
+</body>
+<script type="text/javascript">
+    //全局
+    Vue.component('todo-item',{
+        //子单元通过 props 接口实现了与父单元很好的解耦(这样我们可以对todo-item组件实现
+        props:['todo'], //我们应该能将数据从父作用域传到子组件更复杂的模板和逻辑改进而不影响父单元
+        template:'<li >{{todo.text}}</li>'
+    })
+    //实例化
+    var vm=new Vue({
+        el:'#app',
+        data:{
+            groceryLidt:[
+                { text: '蔬菜' },
+                { text: '奶酪' },
+                { text: '随便其他什么人吃的东西' }
+            ]
+        }
+    })
+</script>
+</html>
